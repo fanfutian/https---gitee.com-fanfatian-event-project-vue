@@ -8,3 +8,14 @@ export const  userRegisterService = (registerData) => {
     }
     return request.post('/user/register', params)
 }
+
+
+
+// 登录接口函数
+export const userLoginService = (registerData) => {
+    const params = new URLSearchParams()
+    for (const key in registerData) {
+        params.append(key, registerData[key])
+    }
+    return request.post('/user/login', params)
+}

@@ -1,6 +1,10 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref } from 'vue'
+// 使用element-plus 的提示框
+import { ElMessage } from 'element-plus'
+
+
 //控制注册与登录表单的显示， 默认显示注册
 const isRegister = ref(false)
 
@@ -38,14 +42,27 @@ const registerRules = {
 }
 
 // 调用注册接口
-import {userRegisterService}  from '@/api/user'
+import {userRegisterService, userLoginService}  from '@/api/user'
 const register = async() => {
     const result  =  await userRegisterService(registerData.value)
-    if(result.code === 0){
-        alert(result.message? result.message : '注册成功')
-    }else {
-        alert(result.message? result.message : '注册失败')
-    }
+    // 使用axios拦截器进行处理，不再 需要手动判断
+    // if(result.code === 0){
+    //     alert(result.message? result.message : '注册成功')
+    // }else {
+    //     alert(result.message? result.message : '注册失败')
+    // }
+    ElMessage.success(result.message ? result.message : '注册成功')
+}
+
+// 调用登录接口
+const login = async() => {
+    const result  =  await userLoginService(registerData.value)
+    // if(result.code === 0){
+    //     alert(result.message? result.message : '登录成功')
+    // }else {
+    //     alert(result.message? result.message : '登录失败')
+    // }
+    ElMessage.success(result.message ? result.message : '登录成功')
 }
 
 // 清除输入的数据
@@ -108,7 +125,7 @@ const clearRegisterData = () => {
                 </el-form-item>
                 <!-- 登录按钮 -->
                 <el-form-item>
-                    <el-button class="button" type="primary" auto-insert-space>登录</el-button>
+                    <el-button class="button" type="primary" auto-insert-space @click="login">登录</el-button>
                 </el-form-item>
                 <el-form-item class="flex">
                     <el-link type="info" :underline="false" @click="isRegister = true; clearRegisterData()">
